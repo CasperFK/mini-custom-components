@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     mode: 'development',
     entry: [
-        './dev/app.js'
+        './dev/main.js'
     ],
     watch: true,
     watchOptions: {
@@ -23,8 +23,8 @@ module.exports = {
     },
     plugins : [
         new HtmlWebpackPlugin({
-            title: 'Webpack Starter Project',
-            template: path.resolve('./dev/app.html')
+            title: 'Mini Custom Components',
+            template: path.resolve('./dev/index.html')
         }),
         new webpack.HotModuleReplacementPlugin()
     ],
@@ -44,7 +44,11 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env']
+                        presets: ['@babel/preset-env'],
+                        plugins: [
+                            ["@babel/plugin-proposal-decorators", { "legacy": true }],
+                            ["@babel/plugin-proposal-class-properties", { "loose": true }]
+                        ]
                     }
                 }
             },

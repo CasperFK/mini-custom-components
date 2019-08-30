@@ -8,7 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     mode: 'production',
     entry: [
-        './dev/app.js'
+        './dev/main.js'
     ],
     optimization: {
         minimizer: [
@@ -18,8 +18,8 @@ module.exports = {
     plugins : [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: 'Webpack Starter Project',
-            template: path.resolve('./dev/app.html')
+            title: 'Mini Custom Components',
+            template: path.resolve('./dev/index.html')
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
@@ -42,7 +42,11 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env']
+                        presets: ['@babel/preset-env'],
+                        plugins: [
+                            ["@babel/plugin-proposal-decorators", { "legacy": true }],
+                            ["@babel/plugin-proposal-class-properties", { "loose": true }]
+                        ]
                     }
                 }
             },
