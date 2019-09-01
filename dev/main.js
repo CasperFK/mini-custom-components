@@ -1,3 +1,8 @@
 import './index.html'
 import './styles.css'
-import './list.components'
+
+export const App = {}
+App.modules = {}
+App.components = {}
+
+const listComponents = require('./list.components')
