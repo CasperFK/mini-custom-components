@@ -1,4 +1,5 @@
 import { Component } from "../../decorators/components.decoratos";
+import { App } from "../../../main";
 
 @Component({
     selector: 'article-component',
@@ -6,6 +7,7 @@ import { Component } from "../../decorators/components.decoratos";
     style: require('./article.component.scss'),
 })
 export class ArticleComponent {
+    $$article 
     constructor() {
         this.read()
     }
@@ -14,6 +16,6 @@ export class ArticleComponent {
     }
 
     read() {
-        this.hello = "Article is Ok"
+        this.$hello = "Article is Ok"
     }
 }

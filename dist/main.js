@@ -91,17 +91,17 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "App", function() { return App; });
-/* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_html__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_styles_css__WEBPACK_IMPORTED_MODULE_1__);
-
+/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_styles_css__WEBPACK_IMPORTED_MODULE_0__);
+// import './index.html'
 
 var App = {};
 App.modules = {};
 App.components = {};
 
-var listComponents = __webpack_require__(12);
+var listComponents = __webpack_require__(11);
+
+console.log(App.components);
 
 /***/ }),
 /* 1 */
@@ -112,66 +112,60 @@ module.exports = __webpack_require__(0);
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n    <title>Mini Custom Components</title>\n</head>\n<body>\n    <app-root></app-root>\n</body>\n</html>";
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-// extracted by mini-css-extract-plugin
+module.exports = "<article-component [article]=\"{{header}}1 - article\"></article-component>\n\n<navbar-component [dom]=\"{{hello}}3\"></navbar-component>\n<h1>{{hello}}</h1>\n<h1>{{hello}}</h1>\n<h2>{{header}}</h2>\n<button id=\"btn4\">Pokaż</button>\n\n\n\n";
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-module.exports = "<article-component></article-component>\n\n<navbar-component [dom]=\"{{hello}}3\"\"></navbar-component>\n<h1>{{hello}}</h1>\n<h1>{{hello}}</h1>\n\n\n\n";
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = "<h3>{{hello}}</h3>\n<button id=\"btn\">Click</button>\n<h4>{{dom}}</h4>\n\n<footer-component [footer]={{human}}></footer-component>\n";
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = "<h3>{{footer}}</h3>\n<h2>{{hello}}</h2>\n<p>{{lepiej}}</p>\n<p>{{domek}}</p>\n<button id=\"btn2\">Zobacz</button>";
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = "<h3>{{hello}}</h3>\n<h2>{{article}}</h2>";
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports) {
-
-module.exports = "<h3>{{hello}}</h3>\n";
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -244,81 +238,59 @@ function () {
 
   return ComponentGenerator;
 }();
+// EXTERNAL MODULE: ./dev/main.js
+var main = __webpack_require__(0);
+
 // CONCATENATED MODULE: ./dev/app/modules/components.modules.js
-function printDataInHTML(value, selector, key, target) {
-  var componentName = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
-  var text = '';
+
+function printDataInHTML2(component, template) {
   var flag1 = false;
   var flag2 = true;
+  var flag3 = false;
+  var text = template;
 
-  if (!value) {
-    value = '{{ Print Error }}';
-  }
+  for (var el in component.property) {
+    var key = el;
 
-  var render = function render() {
-    text = document.querySelector(selector).innerHTML;
+    for (var i = 0; i < text.length; i++) {
+      if (flag1 == false && text[i] == '{' && text[i + 1] == '{') {
+        for (var e = i; e < text.length; e++) {
+          if (text[e] == '}' && text[e + 1] == '}') {
+            var textOld = text.slice(i + 2, e);
 
-    var runReplace = function runReplace() {
-      flag1 = false;
-      flag2 = false;
+            if (key[0] === '$') {
+              var com = document.querySelector(component.property[el]);
+              key = key.slice(1, key.length);
+              var valCom = com.getAttribute('[' + key + ']');
+              console.log(component.selector + ': ' + valCom);
+              component.property[el] = valCom;
+            }
 
-      for (var i = 0; i < text.length; i++) {
-        if (flag1 == false && text[i] == '{' && text[i + 1] == '{') {
-          for (var e = i; e < text.length; e++) {
-            if (text[e] == '}' && text[e + 1] == '}') {
-              var textOld = text.slice(i + 2, e);
+            if (textOld == key) {
+              text = text.toString(text).replace('{{' + key + '}}', component.property[el]);
 
-              if (key[0] === '$') {
-                var com = document.querySelector(value);
-                key = key.slice(1, key.length);
-                var valCom = com.getAttribute('[' + key + ']');
-                value = valCom;
-              }
-
-              if (textOld == key) {
-                text = text.toString(text).replace('{{' + key + '}}', value);
-
-                for (var ii = e - 1; ii < text.length; ii = ii + 2) {
-                  if (text[ii] == '{' && text[ii + 1] == '{') {
-                    flag2 = true;
-                    run();
-                  } else {
-                    flag2 = false;
-                  }
+              for (var ii = e - 1; ii < text.length; ii = ii + 2) {
+                if (text[ii] == '{' && text[ii + 1] == '{') {
+                  flag2 = true;
+                  template = text;
+                } else {
+                  flag2 = false;
+                  flag3 = true;
                 }
               }
             }
           }
         }
       }
-    };
-
-    var run = function run() {
-      if (flag2) {
-        runReplace();
-      }
-    };
-
-    run();
-    var doc2 = document.querySelectorAll(selector);
-    doc2.forEach(function (el) {
-      el.innerHTML = text;
-    });
-  };
-
-  if (!document.querySelector(selector)) {} else {
-    if (componentName) {
-      render();
-    } else {
-      window.addEventListener('load', function () {
-        render();
-      });
     }
   }
-}
-// EXTERNAL MODULE: ./dev/main.js
-var main = __webpack_require__(0);
 
+  var doc2 = document.querySelectorAll(component.selector);
+  doc2.forEach(function (el) {
+    el.innerHTML = text;
+    component.template = text;
+  });
+}
 // CONCATENATED MODULE: ./dev/app/decorators/components.decoratos.js
 
 
@@ -328,47 +300,54 @@ function Component(_ref) {
       template = _ref.template,
       style = _ref.style;
   return function decorator(target) {
+    // console.log(target)          
     var component = new target();
+    main["App"].components[target.name] = {};
+    main["App"].components[target.name].name = target.name;
+    main["App"].components[target.name].component = component;
+    main["App"].components[target.name].target = target;
+    main["App"].components[target.name].selector = selector;
+    main["App"].components[target.name].template = template;
+    main["App"].components[target.name].property = {};
 
     for (var el in component) {
-      main["App"].components[target.name] = {};
-      main["App"].components[target.name].name = target.name;
-      main["App"].components[target.name].component = component;
-      main["App"].components[target.name].target = target;
-      main["App"].components[target.name].selector = selector;
-      main["App"].components[target.name].template = template;
-      component.active();
+      if (el[0] === '$' && el[1] !== '$') {
+        var key = el.slice(1, el.length);
+        main["App"].components[target.name].property[key] = component[el]; // let el1
+        // try {
+        //     const x = document.querySelector(selector).getAttribute('['+ key +']')
+        //     if (x) {
+        //         // console.log('ddddd ' + x)
+        //         printDataInHTML(component[el], selector, el, target)
+        //     } else {
+        //         console.warn(el)
+        //     }
+        // } catch (er) {
+        //     if (er ) {
+        //         console.log('errr :' + er)
+        //     }
+        // }
+      } else if (el[0] === '$' && el[1] === '$') {
+        var _key = el.slice(1, el.length);
 
-      if (el[0] === '$') {
-        var key = void 0;
-        key = el.slice(1, el.length);
-
-        try {
-          var x = document.querySelector(selector).getAttribute('[' + key + ']');
-
-          if (x) {
-            printDataInHTML(component[el], selector, el, target);
-          } else {
-            console.warn(el);
-          }
-        } catch (er) {
-          if (er) {
-            console.log('errr :' + er);
-          }
-        }
-      } else {
-        printDataInHTML(component[el], selector, el, target);
+        main["App"].components[target.name].property[_key] = selector; // console.log('ddddd')
+        // printDataInHTML(component[el], selector, el, target)
       }
     }
 
+    printDataInHTML2(main["App"].components[target.name], template); // console.log(component)
+
     ComponentGenerator.generate({
       selector: selector,
-      template: template
+      template: main["App"].components[target.name].template
+    });
+    window.addEventListener('load', function () {
+      component.active();
     });
   };
 }
 // CONCATENATED MODULE: ./dev/app/app.component.js
-var _dec, _class;
+var _dec, _class, _temp;
 
 function app_component_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -377,33 +356,44 @@ function app_component_defineProperties(target, props) { for (var i = 0; i < pro
 function app_component_createClass(Constructor, protoProps, staticProps) { if (protoProps) app_component_defineProperties(Constructor.prototype, protoProps); if (staticProps) app_component_defineProperties(Constructor, staticProps); return Constructor; }
 
 
-var AppComponent = (_dec = Component({
+
+var app_component_AppComponent = (_dec = Component({
   selector: 'app-root',
-  template: __webpack_require__(4),
-  style: __webpack_require__(5)
-}), _dec(_class =
+  template: __webpack_require__(3),
+  style: __webpack_require__(4)
+}), _dec(_class = (_temp =
 /*#__PURE__*/
 function () {
   function AppComponent() {
     app_component_classCallCheck(this, AppComponent);
 
+    this.$header = "Nagłówek nr. 2";
+    this.$hello = void 0;
     this.read();
   }
 
   app_component_createClass(AppComponent, [{
     key: "active",
-    value: function active() {}
+    value: function active() {
+      var _this = this;
+
+      main["App"].components.AppComponent.header = 'Nagłówek nr.: '; // console.log(this.hello)
+
+      document.querySelector('#btn4').addEventListener('click', function () {
+        console.log(_this.header);
+      });
+    }
   }, {
     key: "read",
     value: function read() {
-      this.hello = 'Ok, Work 2';
+      this.$hello = 'Ok, Work 2';
     }
   }]);
 
   return AppComponent;
-}()) || _class);
+}(), _temp)) || _class);
 // CONCATENATED MODULE: ./dev/app/components/navbar/navbar.component.js
-var navbar_component_dec, navbar_component_class, _temp;
+var navbar_component_dec, navbar_component_class, navbar_component_temp;
 
 function navbar_component_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -415,24 +405,24 @@ function navbar_component_createClass(Constructor, protoProps, staticProps) { if
 
 var navbar_component_NavbarComponent = (navbar_component_dec = Component({
   selector: 'navbar-component',
-  template: __webpack_require__(6),
-  style: __webpack_require__(7)
-}), navbar_component_dec(navbar_component_class = (_temp =
+  template: __webpack_require__(5),
+  style: __webpack_require__(6)
+}), navbar_component_dec(navbar_component_class = (navbar_component_temp =
 /*#__PURE__*/
 function () {
   function NavbarComponent() {
     navbar_component_classCallCheck(this, NavbarComponent);
 
-    this.hello = "Navbar is Ok";
-    this.human = ['Człowiek1', 'Człowiek2'];
-    this.$dom = 'navbar-component';
+    this.$hello = "Navbar is Ok";
+    this.$human = ['Człowiek1', 'Człowiek2'];
+    this.$$dom = 'navbar-component';
     this.read();
   }
 
   navbar_component_createClass(NavbarComponent, [{
     key: "active",
     value: function active() {
-      this.human = main["App"].components.NavbarComponent.name;
+      this.$human = main["App"].components.NavbarComponent.name;
     }
   }, {
     key: "read",
@@ -440,7 +430,7 @@ function () {
   }]);
 
   return NavbarComponent;
-}(), _temp)) || navbar_component_class);
+}(), navbar_component_temp)) || navbar_component_class);
 // CONCATENATED MODULE: ./dev/app/components/footer/footer.component.js
 var footer_component_dec, footer_component_class, footer_component_temp;
 
@@ -454,16 +444,16 @@ function footer_component_createClass(Constructor, protoProps, staticProps) { if
 
 var footer_component_FooterComponent = (footer_component_dec = Component({
   selector: 'footer-component',
-  template: __webpack_require__(8),
-  style: __webpack_require__(9)
+  template: __webpack_require__(7),
+  style: __webpack_require__(8)
 }), footer_component_dec(footer_component_class = (footer_component_temp =
 /*#__PURE__*/
 function () {
   function FooterComponent() {
     footer_component_classCallCheck(this, FooterComponent);
 
-    this.$footer = 'footer-component';
-    this.$domek = void 0;
+    this.$$footer = void 0;
+    this.$domek = 'Domek';
     this.$lepiej = void 0;
     this.read();
   }
@@ -471,36 +461,22 @@ function () {
   footer_component_createClass(FooterComponent, [{
     key: "active",
     value: function active() {
-      main["App"].components.FooterComponent = {
-        $footer: this.$footer,
-        $domek: this.$domek,
-        lepiej: this.lepiej
-      };
+      document.querySelector('#btn2').addEventListener('click', function () {
+        console.log(main["App"].components.NavbarComponent.property.human);
+      });
     }
   }, {
     key: "read",
     value: function read() {
-      var _this = this;
-
-      this.hello = "Footer is works";
-      this.lepiej = "Lepiej"; // this.lepiej !== this.$lepiej
-
-      window.addEventListener('load', function () {
-        main["App"].components.FooterComponent.$domek = 'FooterComponent';
-        _this.domek = main["App"].components.FooterComponent.$domek;
-        _this.$domek = main["App"].components.FooterComponent.$domek;
-        document.querySelector('#btn').addEventListener('click', function () {
-          console.log('FooterComponent ' + main["App"].components.FooterComponent.$footer);
-          console.log(_this.$domek);
-        });
-      });
+      this.$hello = "Footer is works";
+      this.$lepiej = "Lepiej"; // this.lepiej !== this.$lepiej
     }
   }]);
 
   return FooterComponent;
 }(), footer_component_temp)) || footer_component_class);
 // CONCATENATED MODULE: ./dev/app/components/article/article.component.js
-var article_component_dec, article_component_class;
+var article_component_dec, article_component_class, article_component_temp;
 
 function article_component_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -509,16 +485,18 @@ function article_component_defineProperties(target, props) { for (var i = 0; i <
 function article_component_createClass(Constructor, protoProps, staticProps) { if (protoProps) article_component_defineProperties(Constructor.prototype, protoProps); if (staticProps) article_component_defineProperties(Constructor, staticProps); return Constructor; }
 
 
+
 var ArticleComponent = (article_component_dec = Component({
   selector: 'article-component',
-  template: __webpack_require__(10),
-  style: __webpack_require__(11)
-}), article_component_dec(article_component_class =
+  template: __webpack_require__(9),
+  style: __webpack_require__(10)
+}), article_component_dec(article_component_class = (article_component_temp =
 /*#__PURE__*/
 function () {
   function ArticleComponent() {
     article_component_classCallCheck(this, ArticleComponent);
 
+    this.$$article = void 0;
     this.read();
   }
 
@@ -528,12 +506,12 @@ function () {
   }, {
     key: "read",
     value: function read() {
-      this.hello = "Article is Ok";
+      this.$hello = "Article is Ok";
     }
   }]);
 
   return ArticleComponent;
-}()) || article_component_class);
+}(), article_component_temp)) || article_component_class);
 // CONCATENATED MODULE: ./dev/list.components.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListComponents", function() { return ListComponents; });
 function list_components_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }

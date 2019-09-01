@@ -5,6 +5,6 @@ import { ArticleComponent } from "./app/components/article/article.component";
 
 export class ListComponents {
     constructor() {
-       
+        
     }
 }

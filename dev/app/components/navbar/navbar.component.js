@@ -8,16 +8,16 @@ import { App } from "../../../main";
 })
 export class NavbarComponent {
     
-    hello = "Navbar is Ok"
-    human = ['Człowiek1', 'Człowiek2']
-    $dom = 'navbar-component'
+    $hello = "Navbar is Ok"
+    $human = ['Człowiek1', 'Człowiek2']
+    $$dom = 'navbar-component'
     
     constructor() {
         this.read()
     }
 
     active() {
-        this.human = App.components.NavbarComponent.name
+        this.$human = App.components.NavbarComponent.name
     }
 
     read() {
