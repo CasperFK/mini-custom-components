@@ -1,4 +1,4 @@
-import { Component, printDataInHTML } from "../../decorators/components.decoratos";
+import { Component } from "../../decorators/components.decoratos";
 import { App } from "../../../main";
 
 @Component({
@@ -15,9 +15,7 @@ export class FooterComponent {
         
     }
     active() {
-        document.querySelector('#btn2').addEventListener('click', () => {
-            console.log(App.components.NavbarComponent.property.human)
-        })
+        
     }
     read() {
         this.$hello = "Footer is works"

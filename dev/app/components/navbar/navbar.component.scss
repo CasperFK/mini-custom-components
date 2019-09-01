@@ -1,8 +1,27 @@
 navbar-component {
-    h3 {
-        color: blue
+    .wrapperNavbar {
+        display: block;
+        width: 100%;
+    }
+    .nav {
+        display: block;
+        width: 250px;
+        margin: 0 auto
+    }
+    .nav__li {
+        display: inline-block;
+        margin: 10px 25px;
+    }
+    .nav__li--header {
+        display: block;
+        margin: 10px auto;
+        text-align: center;
+        
     }
     h2 {
-        color: orange
+        color: blue;
+    }
+    .nav__btn {
+        width: 200px;
     }
 }

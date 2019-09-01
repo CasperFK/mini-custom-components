@@ -8,16 +8,25 @@ import { App } from "../../../main";
 })
 export class NavbarComponent {
     
-    $hello = "Navbar is Ok"
-    $human = ['Człowiek1', 'Człowiek2']
-    $$dom = 'navbar-component'
+    $menu = 'Menu'
     
     constructor() {
         this.read()
     }
 
     active() {
-        this.$human = App.components.NavbarComponent.name
+        let show = false
+            document.querySelector('#newTask').addEventListener('click', () => {
+                if(show) {
+                    show = false
+                    document.querySelector('navbar-component').style.display = 'block'
+                    document.querySelector('new-task').style.display = 'none'
+                } else {
+                    show = true
+                    document.querySelector('navbar-component').style.display = 'none'
+                    document.querySelector('new-task').style.display = 'block'
+                }
+            })
     }
 
     read() {

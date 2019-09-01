@@ -7,4 +7,3 @@ App.components = {}
 
 const listComponents = require('./list.components')
 
-console.log(App.components)

@@ -16,10 +16,7 @@ export class AppComponent {
 
     active() {
         App.components.AppComponent.header = 'Nagłówek nr.: '
-        // console.log(this.hello)
-        document.querySelector('#btn4').addEventListener('click', () => {
-            console.log(this.header)
-        })
+        
     }
 
     read() {

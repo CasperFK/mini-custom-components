@@ -1,0 +1,22 @@
+new-task {
+    display: none;
+    .wrapper-new-task {
+        text-align: center;
+        display: block;
+        width: 100%;
+        .new-task {
+            width: 350px;
+            margin: 40px auto;
+            .new-task__btn-back {
+                width: 150px;
+                margin-bottom: 20px;
+            }
+            .new-task__header {
+                margin-bottom: 20px;
+            }
+            
+        }
+
+    }
+
+}

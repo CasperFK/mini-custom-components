@@ -99,9 +99,7 @@ var App = {};
 App.modules = {};
 App.components = {};
 
-var listComponents = __webpack_require__(11);
-
-console.log(App.components);
+var listComponents = __webpack_require__(9);
 
 /***/ }),
 /* 1 */
@@ -120,7 +118,7 @@ module.exports = __webpack_require__(0);
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = "<article-component [article]=\"{{header}}1 - article\"></article-component>\n\n<navbar-component [dom]=\"{{hello}}3\"></navbar-component>\n<h1>{{hello}}</h1>\n<h1>{{hello}}</h1>\n<h2>{{header}}</h2>\n<button id=\"btn4\">Pokaż</button>\n\n\n\n";
+module.exports = "<navbar-component></navbar-component>\n<new-task></new-task>\n\n\n\n\n";
 
 /***/ }),
 /* 4 */
@@ -132,7 +130,7 @@ module.exports = "<article-component [article]=\"{{header}}1 - article\"></artic
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = "<h3>{{hello}}</h3>\n<button id=\"btn\">Click</button>\n<h4>{{dom}}</h4>\n\n<footer-component [footer]={{human}}></footer-component>\n";
+module.exports = "<div class=\"wrapperNavbar\">\n        <ul class=\"nav\">\n                <li class=\"nav__li nav__li--header\"><h2>{{menu}}</h2></li>\n                <li class=\"nav__li\"><button id=\"newTask\" class=\"nav__btn\">Nowe zadanie</button></li>\n                <li class=\"nav__li\"><button id=\"listTasks\" class=\"nav__btn\">Lista zadań</button></li>\n                <li class=\"nav__li\"><button id=\"searchTask\" class=\"nav__btn\">Szukaj zadania</button></li>\n            </ul>\n</div>";
 
 /***/ }),
 /* 6 */
@@ -144,7 +142,7 @@ module.exports = "<h3>{{hello}}</h3>\n<button id=\"btn\">Click</button>\n<h4>{{d
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = "<h3>{{footer}}</h3>\n<h2>{{hello}}</h2>\n<p>{{lepiej}}</p>\n<p>{{domek}}</p>\n<button id=\"btn2\">Zobacz</button>";
+module.exports = "<div class=\"wrapper-new-task\">\n    <div class=\"new-task\">\n        <header class=\"new-task__header\">\n            <button class=\"new-task__btn-back\" id=\"btnNewTaskBack\">Wróć</button>\n            <h2 class=\"new-task__h2\">Nowe zadanie:</h2>\n        </header>\n        <main class=\"new-task__main\">\n            <form class=\"new-task__form\">\n                <div class=\"new-task__container\">\n                    <label class=\"new-task__label\" for=\"newTaskName\">Name: </label>\n                    <input class=\"new-task__input\" type=\"text\" id=\"newTaskName\">\n                </div>\n                <div class=\"new-task__container\">\n                    <label class=\"new-task__label\" for=\"newTaskValue\">Value: </label>\n                    <input class=\"new-task__input\" type=\"text\" id=\"newTaskValue\">\n                </div>\n                <div class=\"new-task__container\">\n                    <button class=\"new-task__button\" id=\"addNewTask\">Utwórz</button>\n                </div>\n            </form>\n        </main>\n    </div>\n</div>";
 
 /***/ }),
 /* 8 */
@@ -154,18 +152,6 @@ module.exports = "<h3>{{footer}}</h3>\n<h2>{{hello}}</h2>\n<p>{{lepiej}}</p>\n<p
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports) {
-
-module.exports = "<h3>{{hello}}</h3>\n<h2>{{article}}</h2>";
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -209,7 +195,8 @@ function () {
     key: "generate",
     value: function generate(_ref) {
       var selector = _ref.selector,
-          template = _ref.template;
+          template = _ref.template,
+          name = _ref.name;
 
       var ComponentTemplate =
       /*#__PURE__*/
@@ -226,6 +213,7 @@ function () {
           key: "connectedCallback",
           value: function connectedCallback() {
             this.innerHTML = template;
+            this.setAttribute('name', name);
           }
         }]);
 
@@ -243,7 +231,7 @@ var main = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./dev/app/modules/components.modules.js
 
-function printDataInHTML2(component, template) {
+function printDataInHTML2(component, template, listComponents) {
   var flag1 = false;
   var flag2 = true;
   var flag3 = false;
@@ -262,8 +250,13 @@ function printDataInHTML2(component, template) {
               var com = document.querySelector(component.property[el]);
               key = key.slice(1, key.length);
               var valCom = com.getAttribute('[' + key + ']');
-              console.log(component.selector + ': ' + valCom);
-              component.property[el] = valCom;
+              var parent = listComponents[com.parentElement.getAttribute('name')];
+
+              if (parent.property[valCom]) {
+                component.property[el] = parent.property[valCom];
+              } else {
+                component.property[el] = 'Error: ' + valCom;
+              }
             }
 
             if (textOld == key) {
@@ -291,6 +284,9 @@ function printDataInHTML2(component, template) {
     component.template = text;
   });
 }
+var getAttributeValue = function getAttributeValue(text, key) {
+  return text.search('[' + key + ']');
+};
 // CONCATENATED MODULE: ./dev/app/decorators/components.decoratos.js
 
 
@@ -300,7 +296,7 @@ function Component(_ref) {
       template = _ref.template,
       style = _ref.style;
   return function decorator(target) {
-    // console.log(target)          
+    console.log(style);
     var component = new target();
     main["App"].components[target.name] = {};
     main["App"].components[target.name].name = target.name;
@@ -309,37 +305,26 @@ function Component(_ref) {
     main["App"].components[target.name].selector = selector;
     main["App"].components[target.name].template = template;
     main["App"].components[target.name].property = {};
+    main["App"].components[target.name].parent = {};
 
     for (var el in component) {
       if (el[0] === '$' && el[1] !== '$') {
         var key = el.slice(1, el.length);
-        main["App"].components[target.name].property[key] = component[el]; // let el1
-        // try {
-        //     const x = document.querySelector(selector).getAttribute('['+ key +']')
-        //     if (x) {
-        //         // console.log('ddddd ' + x)
-        //         printDataInHTML(component[el], selector, el, target)
-        //     } else {
-        //         console.warn(el)
-        //     }
-        // } catch (er) {
-        //     if (er ) {
-        //         console.log('errr :' + er)
-        //     }
-        // }
+        main["App"].components[target.name].property[key] = component[el];
       } else if (el[0] === '$' && el[1] === '$') {
         var _key = el.slice(1, el.length);
 
-        main["App"].components[target.name].property[_key] = selector; // console.log('ddddd')
-        // printDataInHTML(component[el], selector, el, target)
+        main["App"].components[target.name].property[_key] = selector;
+        main["App"].components[target.name].parent[_key] = _key;
       }
     }
 
-    printDataInHTML2(main["App"].components[target.name], template); // console.log(component)
-
+    printDataInHTML2(main["App"].components[target.name], template, main["App"].components);
     ComponentGenerator.generate({
       selector: selector,
-      template: main["App"].components[target.name].template
+      template: main["App"].components[target.name].template,
+      name: main["App"].components[target.name].name,
+      style: style
     });
     window.addEventListener('load', function () {
       component.active();
@@ -375,13 +360,7 @@ function () {
   app_component_createClass(AppComponent, [{
     key: "active",
     value: function active() {
-      var _this = this;
-
-      main["App"].components.AppComponent.header = 'Nagłówek nr.: '; // console.log(this.hello)
-
-      document.querySelector('#btn4').addEventListener('click', function () {
-        console.log(_this.header);
-      });
+      main["App"].components.AppComponent.header = 'Nagłówek nr.: ';
     }
   }, {
     key: "read",
@@ -403,7 +382,7 @@ function navbar_component_createClass(Constructor, protoProps, staticProps) { if
 
 
 
-var navbar_component_NavbarComponent = (navbar_component_dec = Component({
+var NavbarComponent = (navbar_component_dec = Component({
   selector: 'navbar-component',
   template: __webpack_require__(5),
   style: __webpack_require__(6)
@@ -413,16 +392,25 @@ function () {
   function NavbarComponent() {
     navbar_component_classCallCheck(this, NavbarComponent);
 
-    this.$hello = "Navbar is Ok";
-    this.$human = ['Człowiek1', 'Człowiek2'];
-    this.$$dom = 'navbar-component';
+    this.$menu = 'Menu';
     this.read();
   }
 
   navbar_component_createClass(NavbarComponent, [{
     key: "active",
     value: function active() {
-      this.$human = main["App"].components.NavbarComponent.name;
+      var show = false;
+      document.querySelector('#newTask').addEventListener('click', function () {
+        if (show) {
+          show = false;
+          document.querySelector('navbar-component').style.display = 'block';
+          document.querySelector('new-task').style.display = 'none';
+        } else {
+          show = true;
+          document.querySelector('navbar-component').style.display = 'none';
+          document.querySelector('new-task').style.display = 'block';
+        }
+      });
     }
   }, {
     key: "read",
@@ -431,93 +419,59 @@ function () {
 
   return NavbarComponent;
 }(), navbar_component_temp)) || navbar_component_class);
-// CONCATENATED MODULE: ./dev/app/components/footer/footer.component.js
-var footer_component_dec, footer_component_class, footer_component_temp;
+// CONCATENATED MODULE: ./dev/app/components/new-task/new.task.component.js
+var new_task_component_dec, new_task_component_class;
 
-function footer_component_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function new_task_component_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function footer_component_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function new_task_component_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function footer_component_createClass(Constructor, protoProps, staticProps) { if (protoProps) footer_component_defineProperties(Constructor.prototype, protoProps); if (staticProps) footer_component_defineProperties(Constructor, staticProps); return Constructor; }
+function new_task_component_createClass(Constructor, protoProps, staticProps) { if (protoProps) new_task_component_defineProperties(Constructor.prototype, protoProps); if (staticProps) new_task_component_defineProperties(Constructor, staticProps); return Constructor; }
 
 
-
-var footer_component_FooterComponent = (footer_component_dec = Component({
-  selector: 'footer-component',
+var NewTaskComponent = (new_task_component_dec = Component({
+  selector: 'new-task',
   template: __webpack_require__(7),
   style: __webpack_require__(8)
-}), footer_component_dec(footer_component_class = (footer_component_temp =
+}), new_task_component_dec(new_task_component_class =
 /*#__PURE__*/
 function () {
-  function FooterComponent() {
-    footer_component_classCallCheck(this, FooterComponent);
+  function NewTaskComponent() {
+    new_task_component_classCallCheck(this, NewTaskComponent);
 
-    this.$$footer = void 0;
-    this.$domek = 'Domek';
-    this.$lepiej = void 0;
     this.read();
   }
 
-  footer_component_createClass(FooterComponent, [{
+  new_task_component_createClass(NewTaskComponent, [{
     key: "active",
     value: function active() {
-      document.querySelector('#btn2').addEventListener('click', function () {
-        console.log(main["App"].components.NavbarComponent.property.human);
+      var show = false;
+      document.querySelector('#btnNewTaskBack').addEventListener('click', function () {
+        if (show) {
+          show = true;
+          document.querySelector('new-task').style.display = 'block';
+          document.querySelector('navbar-component').style.display = 'none';
+        } else {
+          show = false;
+          document.querySelector('new-task').style.display = 'none';
+          document.querySelector('navbar-component').style.display = 'block';
+        }
       });
     }
   }, {
     key: "read",
-    value: function read() {
-      this.$hello = "Footer is works";
-      this.$lepiej = "Lepiej"; // this.lepiej !== this.$lepiej
-    }
+    value: function read() {}
   }]);
 
-  return FooterComponent;
-}(), footer_component_temp)) || footer_component_class);
-// CONCATENATED MODULE: ./dev/app/components/article/article.component.js
-var article_component_dec, article_component_class, article_component_temp;
-
-function article_component_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function article_component_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function article_component_createClass(Constructor, protoProps, staticProps) { if (protoProps) article_component_defineProperties(Constructor.prototype, protoProps); if (staticProps) article_component_defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-var ArticleComponent = (article_component_dec = Component({
-  selector: 'article-component',
-  template: __webpack_require__(9),
-  style: __webpack_require__(10)
-}), article_component_dec(article_component_class = (article_component_temp =
-/*#__PURE__*/
-function () {
-  function ArticleComponent() {
-    article_component_classCallCheck(this, ArticleComponent);
-
-    this.$$article = void 0;
-    this.read();
-  }
-
-  article_component_createClass(ArticleComponent, [{
-    key: "active",
-    value: function active() {}
-  }, {
-    key: "read",
-    value: function read() {
-      this.$hello = "Article is Ok";
-    }
-  }]);
-
-  return ArticleComponent;
-}(), article_component_temp)) || article_component_class);
+  return NewTaskComponent;
+}()) || new_task_component_class);
 // CONCATENATED MODULE: ./dev/list.components.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListComponents", function() { return ListComponents; });
 function list_components_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 
-
+ // import { FooterComponent } from "./app/components/footer/footer.component";
+// import { ArticleComponent } from "./app/components/article/article.component";
 
 
 var ListComponents = function ListComponents() {

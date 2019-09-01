@@ -1,5 +1,5 @@
 export class ComponentGenerator {
-    static generate({selector, template}) {
+    static generate({selector, template, name}) {
         class ComponentTemplate extends HTMLElement {
             
             constructor() {
@@ -7,7 +7,9 @@ export class ComponentGenerator {
             }
             connectedCallback() {
                 this.innerHTML = template
+                this.setAttribute('name', name)
             }
+            
             
         }  
         customElements.define(selector, ComponentTemplate)

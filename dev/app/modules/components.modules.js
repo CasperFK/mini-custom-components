@@ -1,6 +1,6 @@
 import { App } from "../../main";
 
-export function printDataInHTML2 (component, template) {
+export function printDataInHTML2 (component, template, listComponents) {
     let flag1 = false
         let flag2 = true
         let flag3 = false
@@ -17,8 +17,12 @@ export function printDataInHTML2 (component, template) {
                             const com = document.querySelector(component.property[el])
                             key = key.slice(1, key.length)
                             const valCom = com.getAttribute('[' + key + ']')
-                            console.log(component.selector + ': ' + valCom)
-                            component.property[el] = valCom
+                            const parent = listComponents[com.parentElement.getAttribute('name')]
+                            if (parent.property[valCom]) {
+                                component.property[el] = parent.property[valCom]
+                            } else {
+                                component.property[el] = 'Error: ' + valCom
+                            }
                         } 
                         if (textOld == key) {
                             text = text.toString(text).replace('{{' + key + '}}', component.property[el] )
@@ -46,3 +50,6 @@ export function printDataInHTML2 (component, template) {
         }) 
 }
 
+export const getAttributeValue = (text, key) => {
+    return text.search('[' + key + ']')
+}
